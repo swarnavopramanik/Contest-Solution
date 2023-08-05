@@ -1,4 +1,4 @@
-2809. Minimum Time to Make Array Sum At Most x
+https://leetcode.com/contest/biweekly-contest-110/problems/minimum-time-to-make-array-sum-at-most-x/
 
   class Solution {
     public int minimumTime(List<Integer> nums1, List<Integer> nums2, int x) {
