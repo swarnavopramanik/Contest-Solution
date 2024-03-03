@@ -1,54 +1,42 @@
 3067. Count Pairs of Connectable Servers in a Weighted Tree Network
 
-  import java.util.ArrayList;
-import java.util.List;
-
-class Solution {
-    List<int[]>[] adj;
-    int mod;
-
-    int dfs(List<int[]>[] adj, int par, int n, int s) {
-        int ans = 0;
-        if (s % mod == 0)
-            ans++;
-        for (int[] i : adj[n]) {
-            if (i[0] == par)
-                continue;
-            ans = ans + dfs(adj, n, i[0], s + i[1]);
+  class Solution {
+    List<int[]> []list;
+    int n;
+    
+    private int dfs(int parent, int curr, int w, int signalSpeed){
+        int cnt = 0;
+        if(w%signalSpeed == 0) cnt++;
+        for(int[] e:list[curr]){
+            if(e[0] != parent){
+                cnt += dfs(curr, e[0], w+e[1], signalSpeed);
+            }
         }
-        return ans;
+        return cnt;
     }
-
-    int cal(List<int[]>[] adj, int n) {
-        int prev = 0;
-        int ans = 0;
-        for (int[] i : adj[n]) {
-            int k = dfs(adj, n, i[0], i[1]);
-            ans = ans + prev * k;
-            prev = prev + k;
+    
+    public int[] countPairsOfConnectableServers(int[][] edges, int signalSpeed) {
+        n = edges.length+1;
+        list = new ArrayList[n];
+        for(int i=0; i<n; i++){
+            list[i] = new ArrayList();
         }
-        return ans;
-    }
-
-    public List<Integer> countPairsOfConnectableServers(List<List<Integer>> v, int k) {
-        int n = v.size();
-        adj = new List[n + 1];
-        for (int i = 0; i <= n; i++) {
-            adj[i] = new ArrayList<>();
+        
+        for(int []e:edges){
+            list[e[0]].add(new int[]{e[1], e[2]});
+            list[e[1]].add(new int[]{e[0], e[2]});
         }
-
-        for (List<Integer> edge : v) {
-            adj[edge.get(0)].add(new int[]{edge.get(1), edge.get(2)});
-            adj[edge.get(1)].add(new int[]{edge.get(0), edge.get(2)});
+        
+        int[] res = new int[n];
+        for(int i=0; i<n; i++){
+            int node = 0, pair =0;
+            for(int[] e:list[i]){
+                int cnt = dfs(i, e[0], e[1], signalSpeed);
+                pair+=node*cnt;
+                node += cnt;
+            }
+            res[i] = pair;
         }
-
-        List<Integer> ans = new ArrayList<>();
-        mod = k;
-        for (int i = 0; i <= n; i++) {
-            int m = adj[i].size();
-            int s = cal(adj, i);
-            ans.add(s);
-        }
-        return ans;
+        return res;
     }
 }
