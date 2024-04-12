@@ -1,0 +1,45 @@
+https://codeforces.com/contest/1954/problem/D
+
+import java.util.Arrays;
+import java.util.Scanner;
+
+public class MyClass {
+    public static final int N = 5050;
+    public static final int MOD = 998244353;
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int[] dp = new int[N];  
+        int[] sum = new int[N];
+        sum[0] = 1;  
+
+       
+        for (int i = 1; i <= n; i++) {
+            dp[i] = sc.nextInt();
+        }
+
+       
+        Arrays.sort(dp, 1, n + 1);
+
+        int answer = 0;
+        
+        for (int i = 1; i <= n; i++) {
+            int x = dp[i];
+            for (int j = 0; j <= x; j++) {
+                answer = (int)((answer + (long)sum[j] * x) % MOD);
+            }
+            for (int j = x + 1; j < N; j++) {
+                answer = (int)((answer + (long)sum[j] * ((j + x + 1) / 2)) % MOD);
+            }
+            for (int k = N - 1; k >= 0; k--) {
+                if (k >= x) {
+                    sum[k] = (sum[k] + sum[k - x]) % MOD;
+                }
+            }
+        }
+        System.out.println(answer);
+        sc.close();
+    }
+}
+    
