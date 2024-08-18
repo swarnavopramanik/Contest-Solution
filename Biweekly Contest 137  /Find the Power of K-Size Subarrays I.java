@@ -28,7 +28,8 @@ There are 5 subarrays of nums of size 3:
 [4, 3, 2] whose elements are not sorted.
 [3, 2, 5] whose elements are not consecutive.
 
-
+ // Code
+ 
   class Solution {
     public int[] resultsArray(int[] nums, int k) {
      List<Integer> results = new ArrayList<>();
